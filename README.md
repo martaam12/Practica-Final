@@ -1,2 +1,2 @@
-# PracticaFinal.github.io
+# Practica Final
 Mis mapas
