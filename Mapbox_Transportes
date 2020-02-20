@@ -1,0 +1,123 @@
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Mapbox Transportes Barcelona</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css'/>
+
+  <style>
+  
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%
+        }
+
+        #coordenadas {
+            display: block;
+            position: relative;
+            margin: 0px auto;
+            width: 40%;
+            padding: 5px;
+            border: none;
+            border-radius: 7px;
+            font-size: 15px;
+	          font-family: Montserrat;
+            text-align: center;
+            color: #000;
+            background: #D6EAF8;
+    	}
+  </style>
+  
+</head>
+
+<body>
+
+  <div id='map'></div>
+  <pre id='coordenadas'></pre>
+
+<script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoibWFydGFhbTEyIiwiYSI6ImNrNWNvaGlmeDA5dTczbG43emp4cXFmeTQifQ.fwjjOc18wIN1lxj3PWlBVA';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/martaam12/ck6t0oi6c0xn61imf52qk1ynj',
+                center: [2.16859, 41.3954],
+                zoom: 13,
+                attributionControl: false
+            });
+	   
+
+  	    map.addControl(new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken
+            }));
+            map.addControl(new mapboxgl.AttributionControl({compact: true}));
+            map.addControl(new mapboxgl.NavigationControl());
+
+	    map.addControl(new mapboxgl.GeolocateControl({
+            positionOptions: {
+            enableHighAccuracy: true
+            },
+            trackUserLocation: true
+            }));
+
+            map.on('load', function () {
+		map.addSource("marta_source", {
+                    type: "vector",
+                    url: "mapbox://martaam12/ck6t0oi6c0xn61imf52qk1ynj" //poner mapbox://vuestro id
+                }); //fin map source
+
+                map.addLayer({
+                    id: "martaam12.ck6rthamd1ia12lpc2rtn6l2j-7i2sc",
+                    type: "line",
+                    source: "marta_source",
+                    'source-layer': "PUNTS_RECARREGA_Tileset", //poner vuestro titulo capa
+                    paint:{
+                        'line-color':"#00ff00",
+                        "line-width":3
+ 
+                    }
+                });
+
+	    map.addLayer({
+                    id: "martaam12.ck6t32d3b06ov2tphbq31ndm2-260ix",
+                    type: "line",
+                    source: "marta_source",
+                    'source-layer': "TRANSPORTS", //poner vuestro titulo capa
+                    paint:{
+                        'line-color':"#00ff00",
+                        "line-width":3
+ 		    }
+		});
+	    map.addLayer({
+                    id: "martaam12.ck6t3199a04rc2rs4eeghmxp2-48b35",
+                    type: "line",
+                    source: "marta_source",
+                    'source-layer': "ESTACIONS_BUS", //poner vuestro titulo capa
+                    paint:{
+                        'line-color':"#00ff00",
+                        "line-width":3
+		    }
+            });
+
+	    map.on('mousemove', function (e) {
+   	    document.getElementById('coordenadas').innerHTML =
+      	    JSON.stringify(e.lngLat);
+	   });
+	});
+
+    </script>
+</body>
+
+</html>
